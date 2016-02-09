@@ -69,3 +69,20 @@ mysql_database_user 'fozzie' do
   require_ssl true
   action :grant
 end
+
+mysql_database_user 'moozie' do
+  connection connection_info
+  database_name 'databass'
+  password mysql_hashed_password('*F798E7C0681068BAE3242AA2297D2360DBBDA62B')
+  host '127.0.0.1'
+  privileges [:select, :update, :insert]
+  require_ssl false
+  action :grant
+end
+
+mysql_database 'flush repl privileges' do
+  connection connection_info
+  database_name 'databass'
+  sql 'flush privileges'
+  action :query
+end
