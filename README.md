@@ -1,4 +1,4 @@
-Database Cookbook
+git Database Cookbook
 =================
 [![Build Status](https://travis-ci.org/opscode-cookbooks/database.svg?branch=master)](http://travis-ci.org/opscode-cookbooks/database)
 [![Cookbook Version](https://img.shields.io/cookbook/v/database.svg)](https://supermarket.chef.io/cookbooks/database)
@@ -40,7 +40,7 @@ RDBS flavor:
   then use a `mysql2_chef_gem` resource to install it. The resource
   allows the user to select MySQL client library versions, as well as
   optionally select MariaDB libraries.
-      
+
 - PostgreSQL: leverages the `pg` gem which is installed as part of the
   `postgresql::ruby` recipe. You must declare `include_recipe
   "database::postgresql"` to include this.
@@ -109,7 +109,7 @@ mysql_database 'oracle_rools' do
     :password => node['mysql']['server_root_password']
   )
   action :create
-end       
+end
 ```
 ```ruby
 # Create a sql server database
@@ -486,7 +486,16 @@ mysql_database_user 'foo_user' do
   action        :grant
 end
 
-
+# The same as above but utilizing hased password string instead of
+# plain text one
+mysql_database_user 'foo_user' do
+  connection    mysql_connection_info
+  password      mysql_hashed_password('*664E8D709A6EBADFC68361EBE82CF77F10211E52')
+  database_name 'foo'
+  host          '%'
+  privileges    [:select,:update,:insert]
+  action        :grant
+end
 
 # Grant all privileges on all databases/tables from 127.0.0.1
 mysql_database_user 'super_user' do
